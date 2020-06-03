@@ -1,0 +1,22 @@
+logging:
+  level:
+    org.springframework.data.r2dbc: DEBUG
+
+application:
+  base-url: http://localhost:8080
+  complete-registration-url: ${application.base-url}/api/users/complete-registration
+
+adapter:
+  db:
+    host: localhost
+    port: 3306
+    db-name: test
+    admin-username: root
+    admin-password: root
+    standard-username: basic
+    standard-password: basic
+
+spring:
+  redis:
+    host: localhost
+    port: 6379

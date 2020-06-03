@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+
+  # To import the schema, run ./src/main/docker/import-schema.sh
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+#  adminer:
+#    image: adminer
+#    restart: always
+#    ports:
+#      - 9080:8080
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+#  redis-commander:
+#    image: rediscommander/redis-commander
+#    ports:
+#      - 8081:8081
+#    environment:
+#      - REDIS_HOST=redis
+#      - REDIS_PORT=6379

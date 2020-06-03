@@ -1,0 +1,152 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+/* ============================================================================
+     Plugins
+   ============================================================================ */
+
+plugins {
+    id("org.springframework.boot") version "2.3.0.RELEASE"
+    id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id("com.avast.gradle.docker-compose") version "0.12.1"
+    kotlin("jvm") version "1.3.72"
+    kotlin("plugin.spring") version "1.3.72"
+    kotlin("plugin.jpa") version "1.3.72"
+    kotlin("plugin.allopen") version "1.3.72"
+}
+
+/* ============================================================================
+     Project information
+   ============================================================================ */
+
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+/* ============================================================================
+     Configurations
+   ============================================================================ */
+
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+}
+
+/* ============================================================================
+     Source sets
+   ============================================================================ */
+
+sourceSets {
+    create("it") {
+        compileClasspath += sourceSets.main.get().output
+        runtimeClasspath += sourceSets.main.get().output
+    }
+}
+
+val itImplementation by configurations.getting {
+    extendsFrom(configurations.implementation.get())
+}
+
+val itRuntimeOnly by configurations.getting {
+    extendsFrom(configurations.runtimeOnly.get())
+}
+
+/* ============================================================================
+     Repositories
+   ============================================================================ */
+
+repositories {
+    mavenCentral()
+}
+
+/* ============================================================================
+     Dependencies
+   ============================================================================ */
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("dev.miku:r2dbc-mysql")
+    runtimeOnly("mysql:mysql-connector-java")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "junit")
+        exclude(module = "junit-vintage-engine")
+        exclude(module = "mockito-core")
+    }
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("com.ninja-squad:springmockk:1.1.3")
+    testImplementation("io.projectreactor:reactor-test")
+    itImplementation("org.junit.jupiter:junit-jupiter-api")
+    itRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    itImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(module = "junit")
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+        exclude(module = "mockito-core")
+    }
+}
+
+/* ============================================================================
+     Tasks configuration
+   ============================================================================ */
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "1.8"
+    }
+}
+
+/* ============================================================================
+     Tasks
+   ============================================================================ */
+
+val importSchema = task<Exec>("importSchema") {
+    logger.info("Importing the MySQL schema")
+
+    description = "Imports the mysql app db schema"
+    commandLine = listOf("./src/main/docker/import-schema.sh")
+}
+
+val integrationTest = task<Test>("integrationTest") {
+    description = "Runs integration tests."
+    group = "verification"
+
+    testClassesDirs = sourceSets["it"].output.classesDirs
+    classpath = sourceSets["it"].runtimeClasspath
+
+    shouldRunAfter("test")
+    dependsOn("importSchema")
+}
+
+tasks.check { dependsOn(integrationTest) }
+
+/* ============================================================================
+     Plugin configuration
+   ============================================================================ */
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.Embeddable")
+    annotation("javax.persistence.MappedSuperclass")
+}
+
+dockerCompose {
+    useComposeFiles = listOf("./src/main/docker/docker-compose.yml")
+    projectName = "demo-app"
+    isRequiredBy(integrationTest)
+}
