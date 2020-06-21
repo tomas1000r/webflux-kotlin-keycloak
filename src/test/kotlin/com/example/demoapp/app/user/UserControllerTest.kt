@@ -1,4 +1,4 @@
-package com.example.demoapp.app.admin
+package com.example.demoapp.app.user
 
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.adapter.db.repository.admin.AdminUserRepository

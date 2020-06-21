@@ -1,4 +1,4 @@
-package com.example.demoapp.app.user
+package com.example.demoapp.app.register
 
 import com.example.demoapp.adapter.cache.entity.RegistrationLink
 import com.example.demoapp.adapter.cache.repository.RegistrationLinkRepository
@@ -36,7 +36,7 @@ internal class RegisterServiceTest {
         val linkMono = uut.beginRegistration(RegisterDto("first", "last", "test@email.com"))
 
         StepVerifier.create(linkMono)
-                .assertNext { link -> assertEquals("http://localhost/api/users/complete-registration/123-456-789", link) }
+                .assertNext { link -> assertEquals("http://localhost/api/register/123-456-789", link) }
                 .verifyComplete()
     }
 
@@ -55,7 +55,7 @@ internal class RegisterServiceTest {
     private fun mockApplicationProperties(): AppProperties {
         val properties = mockk<AppProperties>()
 
-        every { properties.completeRegistrationUrl } returns "http://localhost/api/users/complete-registration"
+        every { properties.completeRegistrationUrl } returns "http://localhost/api/register"
 
         return properties
     }

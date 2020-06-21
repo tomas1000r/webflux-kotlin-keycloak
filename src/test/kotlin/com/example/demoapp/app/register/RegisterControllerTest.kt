@@ -1,4 +1,4 @@
-package com.example.demoapp.app.user
+package com.example.demoapp.app.register
 
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.register.RegisterController

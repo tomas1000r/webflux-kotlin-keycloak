@@ -41,7 +41,7 @@ class SecurityConfiguration {
         val clientRegistration = ClientRegistrations
                 .fromIssuerLocation("http://localhost:7080/auth/realms/demo")
                 .clientId("spring-security")
-                .clientSecret("c537af58-f85d-4122-b91a-f72afab4c104")
+                .clientSecret("0463e85d-ff20-45ea-8d58-c63530f3fb22")
                 .build()
 
         return InMemoryReactiveClientRegistrationRepository(clientRegistration)

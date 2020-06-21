@@ -97,7 +97,7 @@ dependencies {
     }
 
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("com.ninja-squad:springmockk:1.1.3")
+    testImplementation("com.ninja-squad:springmockk:2.0.1")
     testImplementation("io.projectreactor:reactor-test")
 
     // TestRuntimeOnly
