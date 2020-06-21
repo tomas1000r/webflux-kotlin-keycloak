@@ -1,6 +1,9 @@
 package com.example.demoapp.app.user
 
 import com.example.demoapp.adapter.db.entity.User
+import com.example.demoapp.register.RegisterController
+import com.example.demoapp.register.RegisterService
+import com.example.demoapp.register.RegisterDto
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -10,21 +13,21 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import java.util.*
 
-internal class StandardUserControllerTest {
+internal class RegisterControllerTest {
 
     companion object {
-        lateinit var uut: StandardUserController
+        lateinit var uut: RegisterController
     }
 
     @BeforeEach
     internal fun setUp() {
-        uut = StandardUserController(mockUserRegistrationWorkflow())
+        uut = RegisterController(mockUserRegistrationWorkflow())
     }
 
     @Test
     internal fun shouldBeginRegistration() {
-        val uuidMono = uut.beginRegistration(
-                UserRegistrationDto("firstname", "lastname", "test@email.com"))
+        val uuidMono = uut.initRegistration(
+                RegisterDto("firstname", "lastname", "test@email.com"))
 
         StepVerifier.create(uuidMono)
                 .assertNext { uuid -> assertEquals("123-456-789", uuid) }
@@ -43,10 +46,10 @@ internal class StandardUserControllerTest {
                 .verifyComplete()
     }
 
-    private fun mockUserRegistrationWorkflow(): UserRegistrationWorkflow {
-        val workflow = mockk<UserRegistrationWorkflow>()
+    private fun mockUserRegistrationWorkflow(): RegisterService {
+        val workflow = mockk<RegisterService>()
 
-        every { workflow.beginRegistration(ofType(UserRegistrationDto::class)) } returns Mono.just("123-456-789")
+        every { workflow.beginRegistration(ofType(RegisterDto::class)) } returns Mono.just("123-456-789")
         every { workflow.completeRegistration(ofType(UUID::class)) } returns Mono.just(User(0, "test"))
 
         return workflow

@@ -2,6 +2,7 @@ package com.example.demoapp.app.admin
 
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.adapter.db.repository.admin.AdminUserRepository
+import com.example.demoapp.user.UserController
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,15 +12,15 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
-internal class AdminUserControllerTest {
+internal class UserControllerTest {
 
     companion object {
-        lateinit var uut: AdminUserController
+        lateinit var uut: UserController
     }
 
     @BeforeEach
     internal fun setUp() {
-        uut = AdminUserController(mockAdminUserRepository())
+        uut = UserController(mockAdminUserRepository())
     }
 
     @Test

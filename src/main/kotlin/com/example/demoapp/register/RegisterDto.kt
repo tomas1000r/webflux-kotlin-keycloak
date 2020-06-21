@@ -1,6 +1,6 @@
-package com.example.demoapp.app.user
+package com.example.demoapp.register
 
-data class UserRegistrationDto(
+data class RegisterDto(
         val firstName: String = "",
         val lastName: String = "",
         val email: String = ""

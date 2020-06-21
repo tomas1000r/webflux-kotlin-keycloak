@@ -1,4 +1,4 @@
-package com.example.demoapp.app.user
+package com.example.demoapp.user
 
 class UserDto(
         val id: Long?,

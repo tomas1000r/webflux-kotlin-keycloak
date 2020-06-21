@@ -14,12 +14,51 @@ To build the project including running all the tests, just execute this command 
 
 `./gradlew build`
 
+## Local Development
 
+1. To prepare the stack, run the following command:
+```
+./local-stack-start.sh
+```
 
-Links:
+2. When containers are ready, log in to Keycloak admin console using these credentials:
+```
+user: admin
+password: admin
+```
+
+3. Add new realm by importing json file from:
+```
+keycloak/demo-realm.json
+```
+
+4. Import groups from json file
+```
+keycloak/demo-groups.json
+```
+
+## Shutdown Local Stack
+
+When finished local development, you can shutdown the local stack by executing this command:
+
+```
+./local-stack-stop.sh
+```
+
+## Links:
 
 https://spring.io/guides/tutorials/spring-boot-kotlin
 
 https://bmuschko.com/blog/gradle-docker-compose
 
 https://r2dbc.io
+
+https://www.thomasvitale.com/spring-boot-keycloak-security/
+
+https://docs.spring.io/spring-security/site/docs/current/reference/html5/#webflux-oauth2
+
+https://github.com/spring-projects/spring-security/tree/master/samples/boot/oauth2login-webflux
+
+No authorization server support
+
+https://spring.io/blog/2019/11/14/spring-security-oauth-2-0-roadmap-update

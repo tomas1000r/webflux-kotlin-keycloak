@@ -1,11 +1,11 @@
-package com.example.demoapp.app.config
+package com.example.demoapp.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 
 @ConstructorBinding
-@ConfigurationProperties("application")
-data class ApplicationProperties(
+@ConfigurationProperties("app")
+data class AppProperties(
         val baseUrl: String,
         val completeRegistrationUrl: String
 )

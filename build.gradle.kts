@@ -1,6 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /* ============================================================================
+     Repositories
+   ============================================================================ */
+
+repositories {
+    mavenCentral()
+}
+
+/* ============================================================================
      Plugins
    ============================================================================ */
 
@@ -23,16 +31,6 @@ version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 /* ============================================================================
-     Configurations
-   ============================================================================ */
-
-configurations {
-    compileOnly {
-        extendsFrom(configurations.annotationProcessor.get())
-    }
-}
-
-/* ============================================================================
      Source sets
    ============================================================================ */
 
@@ -43,6 +41,10 @@ sourceSets {
     }
 }
 
+/* ============================================================================
+     Configurations
+   ============================================================================ */
+
 val itImplementation by configurations.getting {
     extendsFrom(configurations.implementation.get())
 }
@@ -52,18 +54,13 @@ val itRuntimeOnly by configurations.getting {
 }
 
 /* ============================================================================
-     Repositories
-   ============================================================================ */
-
-repositories {
-    mavenCentral()
-}
-
-/* ============================================================================
      Dependencies
    ============================================================================ */
 
 dependencies {
+
+    // Implementation
+
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -76,24 +73,51 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("dev.miku:r2dbc-mysql")
+    implementation("org.springdoc:springdoc-openapi-webflux-ui:1.2.32")
+    implementation("com.squareup.moshi:moshi:1.8.0")
+
+    implementation("org.springframework.security:spring-security-config")
+    implementation("org.springframework.security:spring-security-oauth2-client")
+    implementation("org.springframework.security:spring-security-oauth2-jose")
+
+    // RuntimeOnly
+
     runtimeOnly("mysql:mysql-connector-java")
+
+    // AnnotationProcessor
+
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    // TestImplementation
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "junit")
         exclude(module = "junit-vintage-engine")
         exclude(module = "mockito-core")
     }
+
     testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("com.ninja-squad:springmockk:1.1.3")
     testImplementation("io.projectreactor:reactor-test")
-    itImplementation("org.junit.jupiter:junit-jupiter-api")
-    itRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+    // TestRuntimeOnly
+
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
+    // ItImplementation
+
     itImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "junit")
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(module = "mockito-core")
     }
+
+    itImplementation("org.junit.jupiter:junit-jupiter-api")
+
+    // ItRuntimeOnly
+
+    itRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+
 }
 
 /* ============================================================================
@@ -116,10 +140,13 @@ tasks.withType<KotlinCompile> {
    ============================================================================ */
 
 val importSchema = task<Exec>("importSchema") {
-    logger.info("Importing the MySQL schema")
-
     description = "Imports the mysql app db schema"
     commandLine = listOf("./src/main/docker/import-schema.sh")
+    group = "database"
+
+    doFirst {
+        logger.info("Importing the MySQL schema")
+    }
 }
 
 val integrationTest = task<Test>("integrationTest") {

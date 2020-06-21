@@ -1,10 +1,12 @@
 logging:
   level:
     org.springframework.data.r2dbc: DEBUG
+    org.springframework.security: DEBUG
+    org.keycloak: DEBUG
 
-application:
+app:
   base-url: http://localhost:8080
-  complete-registration-url: ${application.base-url}/api/users/complete-registration
+  complete-registration-url: ${app.base-url}/api/register
 
 adapter:
   db:
@@ -16,7 +18,12 @@ adapter:
     standard-username: basic
     standard-password: basic
 
-spring:
   redis:
     host: localhost
     port: 6379
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, beans

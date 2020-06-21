@@ -4,7 +4,9 @@ import com.example.demoapp.adapter.cache.entity.RegistrationLink
 import com.example.demoapp.adapter.cache.repository.RegistrationLinkRepository
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.adapter.db.repository.standard.StandardUserRepository
-import com.example.demoapp.app.config.ApplicationProperties
+import com.example.demoapp.config.AppProperties
+import com.example.demoapp.register.RegisterService
+import com.example.demoapp.register.RegisterDto
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -14,15 +16,15 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import java.util.*
 
-internal class UserRegistrationWorkflowTest {
+internal class RegisterServiceTest {
 
     companion object {
-        lateinit var uut: UserRegistrationWorkflow
+        lateinit var uut: RegisterService
     }
 
     @BeforeEach
     internal fun setUp() {
-        uut = UserRegistrationWorkflow(
+        uut = RegisterService(
                 mockApplicationProperties(),
                 mockRegistrationLinkRepository(),
                 mockStandardUserRepository()
@@ -31,7 +33,7 @@ internal class UserRegistrationWorkflowTest {
 
     @Test
     internal fun shouldBeginRegistration() {
-        val linkMono = uut.beginRegistration(UserRegistrationDto("first", "last", "test@email.com"))
+        val linkMono = uut.beginRegistration(RegisterDto("first", "last", "test@email.com"))
 
         StepVerifier.create(linkMono)
                 .assertNext { link -> assertEquals("http://localhost/api/users/complete-registration/123-456-789", link) }
@@ -50,8 +52,8 @@ internal class UserRegistrationWorkflowTest {
                 .verifyComplete()
     }
 
-    private fun mockApplicationProperties(): ApplicationProperties {
-        val properties = mockk<ApplicationProperties>()
+    private fun mockApplicationProperties(): AppProperties {
+        val properties = mockk<AppProperties>()
 
         every { properties.completeRegistrationUrl } returns "http://localhost/api/users/complete-registration"
 
