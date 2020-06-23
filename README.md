@@ -2,11 +2,17 @@
 
 ## Motivation
 
-In this small project I'd like to show how to setup Spring Boot 2 with Kotlin and R2DBC together and implement unit tests and integration tests.
-The microservices are often connecting to other components like databases, messaging processors or other microservices.
-To simplify the development process, it is great to have the local environment as docker containers up and running with single command.
-When the containers are up, the application can be executed from the IDE and tested with Postman.
-Also the integration tests can be run as part of the whole build or just single test.
+In this project I'd like to show how to create a simple backend application using Spring Boot. Keycloak is used for authentication & authorization.
+Data are stored in MySQL database. R2DBC is used for accessing MySQL data in reactive way.
+
+Local development should be especially easy just by executing `docker-compose up` gradle task and the whole environment is up and configured.
+MySQL data and Keycloak realm is imported automatically after containers starts.
+
+#### User registration feature
+
+The user registration process is divided in two steps:
+1. First, user have to enter the data including email address. The registration link with validity of 30 minutes is sent to the user email address.
+2. Second, when user clicks the link, the registration process is finished
 
 ## Build
 
@@ -14,36 +20,9 @@ To build the project including running all the tests, just execute this command 
 
 `./gradlew build`
 
-## Local Development
+## Integration Tests
 
-1. To prepare the stack, run the following command:
-```
-./local-stack-start.sh
-```
-
-2. When containers are ready, log in to Keycloak admin console using these credentials:
-```
-user: admin
-password: admin
-```
-
-3. Add new realm by importing json file from:
-```
-keycloak/demo-realm.json
-```
-
-4. Import groups from json file
-```
-keycloak/demo-groups.json
-```
-
-## Shutdown Local Stack
-
-When finished local development, you can shutdown the local stack by executing this command:
-
-```
-./local-stack-stop.sh
-```
+To run integration tests, just run `./gradlew integrationTest` task. The tests are in `src/it/kotlin` folder
 
 ## Export Keycloak Realm
 

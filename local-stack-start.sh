@@ -1,1 +1,0 @@
-./gradlew build composeUp importSchema
