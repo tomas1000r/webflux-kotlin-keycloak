@@ -139,16 +139,6 @@ tasks.withType<KotlinCompile> {
      Tasks
    ============================================================================ */
 
-val importSchema = task<Exec>("importSchema") {
-    description = "Imports the mysql app db schema"
-    commandLine = listOf("./src/main/docker/import-schema.sh")
-    group = "database"
-
-    doFirst {
-        logger.info("Importing the MySQL schema")
-    }
-}
-
 val integrationTest = task<Test>("integrationTest") {
     description = "Runs integration tests."
     group = "verification"
@@ -157,7 +147,6 @@ val integrationTest = task<Test>("integrationTest") {
     classpath = sourceSets["it"].runtimeClasspath
 
     shouldRunAfter("test")
-    dependsOn("importSchema")
 }
 
 tasks.check { dependsOn(integrationTest) }

@@ -18,7 +18,6 @@ class SecurityConfiguration {
 
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
-
         return http
                 .authorizeExchange()
                 .pathMatchers("/actuator/**").permitAll()
@@ -41,7 +40,7 @@ class SecurityConfiguration {
         val clientRegistration = ClientRegistrations
                 .fromIssuerLocation("http://localhost:7080/auth/realms/demo")
                 .clientId("spring-security")
-                .clientSecret("0463e85d-ff20-45ea-8d58-c63530f3fb22")
+                .clientSecret("342a09be-808a-4b65-90d0-a79f2de45048")
                 .build()
 
         return InMemoryReactiveClientRegistrationRepository(clientRegistration)
