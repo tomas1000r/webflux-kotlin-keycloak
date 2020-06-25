@@ -31,8 +31,9 @@ Local development should be especially easy just by executing:
 
 1. `./gradlew composeUp` command and the required components are up and configured
 2. Run DemoAppApplication.kt from your IDE
-3. Go to your browser and open `http://localhost:8080/api/users`
-4. Enter credentials 'user' as login name and 'password' for password
+3. To ensure the app is working, open `http://localhost:8080` in your browser
+4. You can open Swagger documentation which is not protected or you can access protected resource
+5. To view protected resource, enter credentials 'user' as login name and 'password' for password
 
 Note: MySQL data and Keycloak realm is imported automatically after containers starts.
 

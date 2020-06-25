@@ -20,6 +20,10 @@ class SecurityConfiguration {
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
                 .authorizeExchange()
+                .pathMatchers("/").permitAll()
+                .pathMatchers("/swagger-ui.html").permitAll()
+                .pathMatchers("/webjars/**").permitAll()
+                .pathMatchers("/v3/**").permitAll()
                 .pathMatchers("/actuator/**").permitAll()
                 .pathMatchers("/api/register/**").permitAll()
                 .anyExchange().authenticated()
