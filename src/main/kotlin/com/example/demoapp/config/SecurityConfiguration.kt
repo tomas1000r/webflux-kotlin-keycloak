@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.client.registration.InMemoryReactiveC
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository
 import org.springframework.security.web.server.SecurityWebFilterChain
 
-
 @Configuration
 @EnableWebFluxSecurity
 class SecurityConfiguration {
@@ -40,11 +39,11 @@ class SecurityConfiguration {
     }
 
     @Bean
-    fun clientRegistrations(): ReactiveClientRegistrationRepository {
+    fun clientRegistrations(appProperties: AppProperties): ReactiveClientRegistrationRepository {
         val clientRegistration = ClientRegistrations
-                .fromIssuerLocation("http://localhost:7080/auth/realms/demo")
-                .clientId("spring-security")
-                .clientSecret("342a09be-808a-4b65-90d0-a79f2de45048")
+                .fromIssuerLocation(appProperties.keycloakIssuerUri)
+                .clientId(appProperties.keycloakClientId)
+                .clientSecret(appProperties.keycloakClientSecret)
                 .build()
 
         return InMemoryReactiveClientRegistrationRepository(clientRegistration)

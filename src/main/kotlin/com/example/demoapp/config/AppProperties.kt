@@ -7,5 +7,8 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConfigurationProperties("app")
 data class AppProperties(
         val baseUrl: String,
-        val completeRegistrationUrl: String
+        val completeRegistrationUrl: String,
+        val keycloakClientId: String,
+        val keycloakClientSecret: String,
+        val keycloakIssuerUri: String
 )

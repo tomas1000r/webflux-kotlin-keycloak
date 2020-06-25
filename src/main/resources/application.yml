@@ -7,6 +7,9 @@ logging:
 app:
   base-url: http://localhost:8080
   complete-registration-url: ${app.base-url}/api/register
+  keycloak-client-id: spring-security
+  keycloak-client-secret: 342a09be-808a-4b65-90d0-a79f2de45048
+  keycloak-issuer-uri: http://localhost:7080/auth/realms/demo
 
 adapter:
   db:
