@@ -6,9 +6,6 @@ I'd like to demonstrate how to write & configure simple backend application util
 
 The project configuration is designed with the focus on simplicity and easy-to-run local development environment.
 
-Local development should be especially easy just by executing `./gradlew composeUp` command and the whole environment is up and configured.
-MySQL data and Keycloak realm is imported automatically after containers starts.
-
 #### Used technologies
 
 - R2DBC - reactive access to relational database
@@ -27,6 +24,16 @@ The user registration process is divided in two steps:
 To build the project including running all the tests, just execute this command in the root of the project folder:
 
 `./gradlew build`
+
+## Local Development
+
+Local development should be especially easy just by executing `./gradlew composeUp` command and the whole environment is up and configured.
+MySQL data and Keycloak realm is imported automatically after containers starts.
+
+Docker compose file contains 'convenient' containers for displaying the data, for example:
+
+- `adminer` - View MySQL data
+- `redis-commander` - View redis keys and values
 
 ## Integration Tests
 
