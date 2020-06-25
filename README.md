@@ -28,7 +28,8 @@ To build the project including running all the tests, just execute this command 
 ## Local Development
 
 Local development should be especially easy just by executing:
-1. `./gradlew composeUp` command and the required components are up and configured.
+
+1. `./gradlew composeUp` command and the required components are up and configured
 2. Run DemoAppApplication.kt from your IDE
 3. Go to your browser and open `http://localhost:8080/api/users`
 4. Enter credentials 'user' as login name and 'password' for password
@@ -39,6 +40,10 @@ Docker compose file contains 'convenient' containers for displaying the data, fo
 
 - `adminer` - View MySQL data
 - `redis-commander` - View redis keys and values
+
+## Shutdown local environment
+
+To shutdown the local environment just run `./gradlew composeDown`
 
 ## Integration Tests
 
