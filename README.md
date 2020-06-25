@@ -1,12 +1,20 @@
-# Demo application project
+# Demo Application in Kotlin + Spring Webflux + Keycloak
 
 ## Motivation
 
-In this project I'd like to show how to create a simple backend application using Spring Boot. Keycloak is used for authentication & authorization.
-Data are stored in MySQL database. R2DBC is used for accessing MySQL data in reactive way.
+I'd like to demonstrate how to write & configure simple backend application utilizing modern technology stack like Kotlin and Webflux. It can be used as a starter template for microservice in enterprise app or backend for mobile app.
+
+The project configuration is designed with the focus on simplicity and easy-to-run local development environment.
 
 Local development should be especially easy just by executing `docker-compose up` gradle task and the whole environment is up and configured.
 MySQL data and Keycloak realm is imported automatically after containers starts.
+
+#### Used technologies
+
+- R2DBC - reactive access to relational database
+- Redis - store registration tokens
+- MySQL - store user information
+- Keycloak - authorization server and idp
 
 #### User registration feature
 
