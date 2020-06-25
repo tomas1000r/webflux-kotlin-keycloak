@@ -6,7 +6,7 @@ I'd like to demonstrate how to write & configure simple backend application util
 
 The project configuration is designed with the focus on simplicity and easy-to-run local development environment.
 
-Local development should be especially easy just by executing `docker-compose up` gradle task and the whole environment is up and configured.
+Local development should be especially easy just by executing `./gradlew composeUp` command and the whole environment is up and configured.
 MySQL data and Keycloak realm is imported automatically after containers starts.
 
 #### Used technologies
