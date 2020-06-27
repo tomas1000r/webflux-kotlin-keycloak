@@ -6,10 +6,7 @@ logging:
 
 app:
   base-url: http://localhost:8080
-  complete-registration-url: ${app.base-url}/api/register
-  keycloak-client-id: spring-security
-  keycloak-client-secret: 342a09be-808a-4b65-90d0-a79f2de45048
-  keycloak-issuer-uri: http://localhost:7080/auth/realms/demo
+  confirm-registration-url: ${app.base-url}/api/register
 
 adapter:
   db:
@@ -20,10 +17,19 @@ adapter:
     admin-password: root
     standard-username: basic
     standard-password: basic
-
   redis:
     host: localhost
     port: 6379
+  keycloak:
+    base-url: http://localhost:7080/auth
+    issuer-url: ${adapter.keycloak.base-url}/realms/demo
+    client-id: spring-security
+    client-secret: 342a09be-808a-4b65-90d0-a79f2de45048
+    realm: demo
+    admin-client-id: admin-cli
+    admin-username: admin
+    admin-password: admin
+    admin-realm: master
 
 management:
   endpoints:

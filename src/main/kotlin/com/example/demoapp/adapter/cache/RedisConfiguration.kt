@@ -1,6 +1,5 @@
-package com.example.demoapp.adapter.cache.config
+package com.example.demoapp.adapter.cache
 
-import com.example.demoapp.adapter.cache.entity.RegistrationLink
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory
@@ -14,10 +13,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 class RedisConfiguration {
 
     @Bean
-    fun redisOperations(factory: ReactiveRedisConnectionFactory): ReactiveRedisOperations<String, RegistrationLink> {
-        val serializer = Jackson2JsonRedisSerializer(RegistrationLink::class.java)
+    fun redisOperations(factory: ReactiveRedisConnectionFactory): ReactiveRedisOperations<String, RegistrationMetadata> {
+        val serializer = Jackson2JsonRedisSerializer(RegistrationMetadata::class.java)
 
-        val builder: RedisSerializationContext.RedisSerializationContextBuilder<String, RegistrationLink> =
+        val builder: RedisSerializationContext.RedisSerializationContextBuilder<String, RegistrationMetadata> =
                 RedisSerializationContext.newSerializationContext(StringRedisSerializer())
 
         val context = builder.value(serializer).build()

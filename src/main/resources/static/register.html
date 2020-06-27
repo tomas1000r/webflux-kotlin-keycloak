@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.0.1">
+    <title>Register new user</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/starter-template/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- Favicons -->
+    <meta name="msapplication-config" content="/docs/4.5/assets/img/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#563d7c">
+
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main role="main" class="container">
+
+    <div style="margin-top: 70px; max-width: 700px;">
+        <h1>Register new user</h1>
+
+        <div id="registrationSuccessPanel" style="margin-top: 70px;" class="alert alert-success d-none" role="alert">
+            Registration process started. The link has been sent to your email or it is displayed below.
+            To finish the registration, please click on the link below:<br/><br/>
+
+            <a href="" id="registrationLink">link</a>
+        </div>
+
+        <div style="margin-top: 50px;">
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="firstName">First name</label>
+                    <input type="text" class="form-control" id="firstName" aria-describedby="firstNameHelp">
+                    <small id="firstNameHelp" class="form-text text-muted">First name</small>
+                </div>
+                <div class="col">
+                    <label for="lastName">Last name</label>
+                    <input type="text" class="form-control" id="lastName" aria-describedby="lastNameHelp">
+                    <small id="lastNameHelp" class="form-text text-muted">Last name</small>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" aria-describedby="emailHelp">
+                    <small id="emailHelp" class="form-text text-muted">Email</small>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" aria-describedby="passwordHelp">
+                    <small id="passwordHelp" class="form-text text-muted">Password</small>
+                </div>
+            </div>
+
+            <button onclick="registerUser()" class="btn btn-primary btn-lg mb-3 mr-3">Register</button>
+            <button  class="btn btn-secondary btn-lg mb-3">Back</button>
+
+        </div>
+    </div>
+
+</main><!-- /.container -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"><\/script>')</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"
+        integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
+
+
+<script>
+
+    let firstName = $('#firstName');
+    let lastName = $('#lastName');
+    let email = $('#email');
+    let password = $('#password');
+
+    let registrationSuccessPanel = $('#registrationSuccessPanel');
+    let registrationLink = $('#registrationLink');
+
+    let registerUser = function () {
+        let data = {
+            'firstName': firstName.val(),
+            'lastName': lastName.val(),
+            'email': email.val(),
+            'password': password.val()
+        };
+
+        fetch('/api/register', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(data => {
+            data.text().then(text => {
+                showResponse(text);
+                clearForm();
+            });
+        });
+    }
+
+    let showResponse = function (text) {
+        registrationSuccessPanel.removeClass('d-none');
+        registrationLink.attr('href', text);
+        registrationLink.text(text);
+    }
+
+    let clearForm = function() {
+        firstName.text('');
+        lastName.text('');
+        email.text('');
+    }
+</script>
+</body>
+</html>

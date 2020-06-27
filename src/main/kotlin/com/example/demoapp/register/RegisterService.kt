@@ -1,32 +1,45 @@
 package com.example.demoapp.register
 
-import com.example.demoapp.adapter.cache.entity.RegistrationLink
-import com.example.demoapp.adapter.cache.repository.RegistrationLinkRepository
+import com.example.demoapp.adapter.cache.RegistrationMetadata
+import com.example.demoapp.adapter.cache.RegistrationMetadataRepository
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.adapter.db.repository.standard.StandardUserRepository
+import com.example.demoapp.adapter.keycloak.KeycloakRepository
+import com.example.demoapp.adapter.keycloak.KeycloakUser
 import com.example.demoapp.config.AppProperties
-import org.springframework.stereotype.Component
+import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import java.util.*
 
-@Component
+@Service
 class RegisterService(
         private val properties: AppProperties,
-        private val registrationLinkRepository: RegistrationLinkRepository,
-        private val standardUserRepository: StandardUserRepository
+        private val registrationMetadataRepository: RegistrationMetadataRepository,
+        private val standardUserRepository: StandardUserRepository,
+        private val keycloakRepository: KeycloakRepository
 ) {
 
-    fun beginRegistration(dto: RegisterDto): Mono<String> {
+    fun beginRegistration(details: RegistrationDetails): Mono<String> {
+        // TODO  Send confirmation link to email
+
         return Mono.just(UUID.randomUUID().toString())
                 .flatMap { uuid ->
-                    registrationLinkRepository
-                            .create(RegistrationLink(uuid, dto.email))
-                            .map { link -> properties.completeRegistrationUrl + "/" + link.uuid }
+                    registrationMetadataRepository
+                            .create(RegistrationMetadata(uuid, details.email, details.firstName, details.lastName, details.password))
+                            .map { metadata -> properties.confirmRegistrationUrl + "/" + metadata.uuid }
                 }
     }
 
-    fun completeRegistration(uuid: UUID): Mono<User> {
-        return registrationLinkRepository.findByUuid(uuid)
-                .flatMap { link -> standardUserRepository.save(User(null, link.email)) }
+    fun confirmRegistration(uuid: UUID): Mono<Void> {
+        // TODO send generated password to email
+
+        return registrationMetadataRepository.findByUuid(uuid)
+                .doOnNext { metadata ->
+                    run {
+                        standardUserRepository.save(User(null, metadata.email))
+
+                        keycloakRepository.createUser(KeycloakUser(metadata.firstName, metadata.lastName, metadata.email, metadata.password))
+                    }
+                }.then()
     }
 }

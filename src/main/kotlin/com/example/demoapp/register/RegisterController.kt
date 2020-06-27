@@ -1,6 +1,5 @@
 package com.example.demoapp.register
 
-import com.example.demoapp.user.UserDto
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 import java.util.*
@@ -14,12 +13,12 @@ class RegisterController(
 
     @PostMapping
     fun initRegistration(@RequestBody @Valid dto: RegisterDto): Mono<String> {
-        return registerService.beginRegistration(dto)
+        val details = RegistrationDetails(dto.firstName, dto.lastName, dto.email, dto.password);
+        return registerService.beginRegistration(details)
     }
 
-    @PostMapping("/{uuid}")
-    fun completeRegistration(@PathVariable uuid: UUID): Mono<UserDto> {
-        return registerService.completeRegistration(uuid)
-                .map { user -> UserDto(user.id, user.name) }
+    @GetMapping("/{uuid}")
+    fun completeRegistration(@PathVariable uuid: UUID): Mono<Void> {
+        return registerService.confirmRegistration(uuid)
     }
 }

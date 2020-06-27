@@ -1,7 +1,7 @@
 package com.example.demoapp.app.register
 
-import com.example.demoapp.adapter.cache.entity.RegistrationLink
-import com.example.demoapp.adapter.cache.repository.RegistrationLinkRepository
+import com.example.demoapp.adapter.cache.RegistrationMetadata
+import com.example.demoapp.adapter.cache.RegistrationMetadataRepository
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.adapter.db.repository.standard.StandardUserRepository
 import com.example.demoapp.config.AppProperties
@@ -42,7 +42,7 @@ internal class RegisterServiceTest {
 
     @Test
     internal fun shouldCompleteRegistration() {
-        val userMono = uut.completeRegistration(UUID.randomUUID())
+        val userMono = uut.confirmRegistration(UUID.randomUUID())
 
         StepVerifier.create(userMono)
                 .assertNext { user ->
@@ -55,16 +55,16 @@ internal class RegisterServiceTest {
     private fun mockApplicationProperties(): AppProperties {
         val properties = mockk<AppProperties>()
 
-        every { properties.completeRegistrationUrl } returns "http://localhost/api/register"
+        every { properties.confirmRegistrationUrl } returns "http://localhost/api/register"
 
         return properties
     }
 
-    private fun mockRegistrationLinkRepository(): RegistrationLinkRepository {
-        val repository = mockk<RegistrationLinkRepository>()
+    private fun mockRegistrationLinkRepository(): RegistrationMetadataRepository {
+        val repository = mockk<RegistrationMetadataRepository>()
 
-        every { repository.create(ofType(RegistrationLink::class)) } returns Mono.just(RegistrationLink("123-456-789", "test@email.com"))
-        every { repository.findByUuid(ofType(UUID::class)) } returns Mono.just(RegistrationLink("123-456-789", "test@email.com"))
+        every { repository.create(ofType(RegistrationMetadata::class)) } returns Mono.just(RegistrationMetadata("123-456-789", "test@email.com"))
+        every { repository.findByUuid(ofType(UUID::class)) } returns Mono.just(RegistrationMetadata("123-456-789", "test@email.com"))
 
         return repository
     }

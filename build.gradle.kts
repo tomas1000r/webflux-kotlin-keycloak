@@ -67,6 +67,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+    implementation("org.springframework.security:spring-security-config")
+    implementation("org.springframework.security:spring-security-oauth2-client")
+    implementation("org.springframework.security:spring-security-oauth2-jose")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -75,10 +78,7 @@ dependencies {
     implementation("dev.miku:r2dbc-mysql")
     implementation("org.springdoc:springdoc-openapi-webflux-ui:1.2.32")
     implementation("com.squareup.moshi:moshi:1.8.0")
-
-    implementation("org.springframework.security:spring-security-config")
-    implementation("org.springframework.security:spring-security-oauth2-client")
-    implementation("org.springframework.security:spring-security-oauth2-jose")
+    implementation("org.keycloak:keycloak-admin-client:10.0.2")
 
     // RuntimeOnly
 

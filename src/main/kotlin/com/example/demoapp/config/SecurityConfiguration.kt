@@ -1,5 +1,6 @@
 package com.example.demoapp.config
 
+import com.example.demoapp.adapter.keycloak.KeycloakProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
@@ -24,6 +25,7 @@ class SecurityConfiguration {
                 .pathMatchers("/webjars/**").permitAll()
                 .pathMatchers("/v3/**").permitAll()
                 .pathMatchers("/actuator/**").permitAll()
+                .pathMatchers("/register.html").permitAll()
                 .pathMatchers("/api/register/**").permitAll()
                 .anyExchange().authenticated()
                 .and()
@@ -39,11 +41,11 @@ class SecurityConfiguration {
     }
 
     @Bean
-    fun clientRegistrations(appProperties: AppProperties): ReactiveClientRegistrationRepository {
+    fun clientRegistrations(properties: KeycloakProperties): ReactiveClientRegistrationRepository {
         val clientRegistration = ClientRegistrations
-                .fromIssuerLocation(appProperties.keycloakIssuerUri)
-                .clientId(appProperties.keycloakClientId)
-                .clientSecret(appProperties.keycloakClientSecret)
+                .fromIssuerLocation(properties.issuerUrl)
+                .clientId(properties.clientId)
+                .clientSecret(properties.clientSecret)
                 .build()
 
         return InMemoryReactiveClientRegistrationRepository(clientRegistration)

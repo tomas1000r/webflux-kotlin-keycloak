@@ -50,7 +50,7 @@ internal class RegisterControllerTest {
         val workflow = mockk<RegisterService>()
 
         every { workflow.beginRegistration(ofType(RegisterDto::class)) } returns Mono.just("123-456-789")
-        every { workflow.completeRegistration(ofType(UUID::class)) } returns Mono.just(User(0, "test"))
+        every { workflow.confirmRegistration(ofType(UUID::class)) } returns Mono.just(User(0, "test"))
 
         return workflow
     }
