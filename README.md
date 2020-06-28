@@ -82,7 +82,7 @@ Please note, that when Keycloak container starts, the demo-realm.json is automat
 
 To access Keycloak admin console, open `http://localhost:7080` page and use `admin` user with password `admin`.
 
-## Links:
+## Resources:
 
 #### Keycloak Container
 
