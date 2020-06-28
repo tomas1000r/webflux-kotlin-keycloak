@@ -62,6 +62,11 @@ class SecurityConfiguration {
         return InMemoryReactiveClientRegistrationRepository(clientRegistration)
     }
 
+    /*
+     * To implement custom mapping of authorities
+     *
+     * https://github.com/spring-projects/spring-security/issues/6266
+     */
     @Bean
     fun oidcUserService(): ReactiveOAuth2UserService<OidcUserRequest, OidcUser> {
         val delegate = OidcReactiveOAuth2UserService()

@@ -24,6 +24,13 @@ The user registration process is divided in two steps:
 To use method level security, some configuration had to be done in SecurityConfiguration class.
 Please note ReactiveOAuth2UserService bean where custom mapping between Keycloak roles and authorities had to be configured.
 
+#### Custom mapping of roles and authorities
+
+Class `OidcAuthorizationCodeReactiveAuthenticationManager` loads the `OidcUser` and tries to map received authorities to `GrantedAuthority` objects.
+The Keycloak provides the Realm roles in 'attributes' map and not directly 'authorities' property. Therefore the custom mapping needed to be provided.
+To use method level security expression like `@PreAuthorize("hasRole('ROLE_CUSTOM')")`, the manual mapping has to be implemented.
+See `SecurityConfiguration.kt` and `ReactiveOAuth2UserService` bean, or https://github.com/spring-projects/spring-security/issues/6266
+
 ## Build
 
 To build the project including running all the tests, just execute this command in the root of the project folder:
