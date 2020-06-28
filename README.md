@@ -82,6 +82,17 @@ Please note, that when Keycloak container starts, the demo-realm.json is automat
 
 To access Keycloak admin console, open `http://localhost:7080` page and use `admin` user with password `admin`.
 
+## TODO
+
+* Deliver this demo application as docker image
+* Support both options for running local dev stack:
+  - running demo application as a docker container within docker-compose.yml
+  - running demo application from IDE by running `DemoAppApplication.kt` class
+* Implement missing unit and integration tests
+* Implement supporting admin UI
+* Implement demo client app
+* User registration via Keycloak
+
 ## Resources:
 
 #### Keycloak Container
