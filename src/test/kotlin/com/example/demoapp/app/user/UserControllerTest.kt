@@ -2,6 +2,7 @@ package com.example.demoapp.app.user
 
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.adapter.db.repository.admin.AdminUserRepository
+import com.example.demoapp.adapter.db.repository.standard.StandardUserRepository
 import com.example.demoapp.user.UserController
 import io.mockk.every
 import io.mockk.mockk
@@ -20,7 +21,7 @@ internal class UserControllerTest {
 
     @BeforeEach
     internal fun setUp() {
-        uut = UserController(mockAdminUserRepository())
+        uut = UserController(mockAdminUserRepository(), mockStandardRepository())
     }
 
     @Test
@@ -48,6 +49,14 @@ internal class UserControllerTest {
 
         every { repository.deleteById(ofType(Long::class)) } returns Mono.just("").then()
         every { repository.findAll() } returns Flux.just(User(0, "test"))
+
+        return repository
+    }
+
+    private fun mockStandardRepository(): StandardUserRepository {
+        val repository = mockk<StandardUserRepository>()
+
+        // TODO finish mock
 
         return repository
     }

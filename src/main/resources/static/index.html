@@ -79,7 +79,19 @@
             It can be used as a starter template for microservice in enterprise app or backend for mobile app.</p>
 
         <div class="mt-5">
-            <a href="/api/users" class="btn btn-primary btn-lg m-3">Access protected resource</a><br/>
+            <p>To access protected resource /api/users which is available only for 'useradmin' role, use these credentials: <br/><br/>
+                User: <b>useradmin</b> <br/>
+                Password: <b>useradmin</b>
+            </p>
+            <a href="/api/users" class="btn btn-primary btn-lg m-3">View all users (useradmin)</a><br/>
+            <p>To access user info endpoint /api/users/me which is available for all authenticated users, use these credentials: <br/><br/>
+                User: <b>user</b> <br/>
+                Password: <b>password</b>
+            </p>
+            <a href="/api/users/me" class="btn btn-primary btn-lg m-3">View user profile (all authenticated users)</a>
+            <p>
+
+            </p>
             <a href="/swagger-ui.html" class="btn btn-primary btn-lg m-3">Swagger Documentation</a><br>
             <a href="/register.html" class="btn btn-primary btn-lg m-3">Register new user</a><br/>
         </div>

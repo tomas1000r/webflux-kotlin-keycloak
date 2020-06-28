@@ -19,6 +19,11 @@ The user registration process is divided in two steps:
 1. First, user have to enter the data including email address. The registration link with validity of 30 minutes is sent to the user email address.
 2. Second, when user clicks the link, the registration process is finished
 
+#### Method level security
+
+To use method level security, some configuration had to be done in SecurityConfiguration class.
+Please note ReactiveOAuth2UserService bean where custom mapping between Keycloak roles and authorities had to be configured.
+
 ## Build
 
 To build the project including running all the tests, just execute this command in the root of the project folder:
@@ -34,6 +39,7 @@ Local development should be especially easy just by executing:
 3. To ensure the app is working, open `http://localhost:8080` in your browser
 4. You can open Swagger documentation which is not protected or you can access protected resource
 5. To view protected resource, enter credentials 'user' as login name and 'password' for password
+6. To register new user, click 'Register new user' button
 
 Note: MySQL data and Keycloak realm is imported automatically after containers starts.
 
@@ -55,7 +61,7 @@ To run integration tests, just run `./gradlew integrationTest` task. The tests a
 To export the changes made in existing realm, execute the following command:
 
 ```
-docker exec -it kc /opt/jboss/keycloak/bin/standalone.sh \
+docker exec -it demo-app_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh \
 -Djboss.socket.binding.port-offset=100 -Dkeycloak.migration.action=export \
 -Dkeycloak.migration.provider=singleFile \
 -Dkeycloak.migration.realmName=demo \
@@ -64,6 +70,10 @@ docker exec -it kc /opt/jboss/keycloak/bin/standalone.sh \
 ```
 
 Please note, that when Keycloak container starts, the demo-realm.json is automatically imported. This is configured in docker-compose.yml.
+
+## Keycloak
+
+To access Keycloak admin console, open `http://localhost:7080` page and use `admin` user with password `admin`.
 
 ## Links:
 

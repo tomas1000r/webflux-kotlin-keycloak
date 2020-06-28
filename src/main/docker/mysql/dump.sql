@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS user (
 
 DROP USER IF EXISTS 'basic'@'%';
 CREATE USER IF NOT EXISTS 'basic'@'%' IDENTIFIED BY 'basic';
-GRANT INSERT ON test.user TO 'basic'@'%';
+GRANT INSERT, SELECT ON test.user TO 'basic'@'%';
 
 FLUSH PRIVILEGES;

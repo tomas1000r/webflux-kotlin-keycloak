@@ -4,9 +4,10 @@ import com.example.demoapp.adapter.cache.RegistrationMetadata
 import com.example.demoapp.adapter.cache.RegistrationMetadataRepository
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.adapter.db.repository.standard.StandardUserRepository
+import com.example.demoapp.adapter.keycloak.KeycloakRepository
 import com.example.demoapp.config.AppProperties
 import com.example.demoapp.register.RegisterService
-import com.example.demoapp.register.RegisterDto
+import com.example.demoapp.register.RegistrationDetails
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -27,13 +28,14 @@ internal class RegisterServiceTest {
         uut = RegisterService(
                 mockApplicationProperties(),
                 mockRegistrationLinkRepository(),
-                mockStandardUserRepository()
+                mockStandardUserRepository(),
+                mockKeycloakRepository()
         )
     }
 
     @Test
     internal fun shouldBeginRegistration() {
-        val linkMono = uut.beginRegistration(RegisterDto("first", "last", "test@email.com"))
+        val linkMono = uut.beginRegistration(RegistrationDetails("first", "last", "test@email.com", "1234"))
 
         StepVerifier.create(linkMono)
                 .assertNext { link -> assertEquals("http://localhost/api/register/123-456-789", link) }
@@ -42,13 +44,9 @@ internal class RegisterServiceTest {
 
     @Test
     internal fun shouldCompleteRegistration() {
-        val userMono = uut.confirmRegistration(UUID.randomUUID())
+        val voidMono = uut.confirmRegistration(UUID.randomUUID())
 
-        StepVerifier.create(userMono)
-                .assertNext { user ->
-                    assertEquals(0, user.id)
-                    assertEquals("test", user.name)
-                }
+        StepVerifier.create(voidMono)
                 .verifyComplete()
     }
 
@@ -73,6 +71,14 @@ internal class RegisterServiceTest {
         val repository = mockk<StandardUserRepository>()
 
         every { repository.save(ofType(User::class)) } returns Mono.just(User(0, "test"))
+
+        return repository
+    }
+
+    private fun mockKeycloakRepository(): KeycloakRepository {
+        val repository = mockk<KeycloakRepository>()
+
+        // TODO finish mock
 
         return repository
     }

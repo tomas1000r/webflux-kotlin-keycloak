@@ -2,8 +2,9 @@ package com.example.demoapp.app.register
 
 import com.example.demoapp.adapter.db.entity.User
 import com.example.demoapp.register.RegisterController
-import com.example.demoapp.register.RegisterService
 import com.example.demoapp.register.RegisterDto
+import com.example.demoapp.register.RegisterService
+import com.example.demoapp.register.RegistrationDetails
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -36,21 +37,17 @@ internal class RegisterControllerTest {
 
     @Test
     internal fun shouldCompleteRegistration() {
-        val userMono = uut.completeRegistration(UUID.randomUUID())
+        val monoVoid = uut.completeRegistration(UUID.randomUUID())
 
-        StepVerifier.create(userMono)
-                .assertNext { user ->
-                    assertEquals(0, user.id)
-                    assertEquals("test", user.name)
-                }
+        StepVerifier.create(monoVoid)
                 .verifyComplete()
     }
 
     private fun mockUserRegistrationWorkflow(): RegisterService {
         val workflow = mockk<RegisterService>()
 
-        every { workflow.beginRegistration(ofType(RegisterDto::class)) } returns Mono.just("123-456-789")
-        every { workflow.confirmRegistration(ofType(UUID::class)) } returns Mono.just(User(0, "test"))
+        every { workflow.beginRegistration(ofType(RegistrationDetails::class)) } returns Mono.just("123-456-789")
+        every { workflow.confirmRegistration(ofType(UUID::class)) } returns Mono.empty()
 
         return workflow
     }
