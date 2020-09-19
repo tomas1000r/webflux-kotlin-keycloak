@@ -31,7 +31,7 @@ class UserController(
 
     @GetMapping("/me")
     fun findOne(@AuthenticationPrincipal principal: OAuth2AuthenticatedPrincipal): Mono<UserDto> {
-        // TODO Load user from db
+        // TODO Load user from db by principal
 
 //        return standardUserRepository.findById(1)
 //                .map { u -> UserDto(u.id, u.name) }

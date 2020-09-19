@@ -25,7 +25,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain
 @Configuration
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
-class SecurityConfiguration {
+class SecurityConfig {
 
     @Bean
     fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
@@ -36,6 +36,7 @@ class SecurityConfiguration {
                 .pathMatchers("/webjars/**").permitAll()
                 .pathMatchers("/v3/**").permitAll()
                 .pathMatchers("/actuator/**").permitAll()
+                .pathMatchers("/index.html").permitAll()
                 .pathMatchers("/register.html").permitAll()
                 .pathMatchers("/api/register/**").permitAll()
                 .anyExchange().authenticated()
